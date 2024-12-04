@@ -1,8 +1,18 @@
 <script lang="ts" setup>
 import TaskList from './TaskList.vue';
 import TimerWatch from './TimerWatch.vue';
+import { ref, defineEmits } from 'vue';
 
+const emit = defineEmits(['isSavetask'])
+const description = ref('')
+const stopTask = ( timeElapsed: number): void => {
+  emit('isSavetask', {
+    durationSeconds: timeElapsed,
+    description: description.value
+  })
 
+  description.value = ''
+}
 </script>
 
 <template>
@@ -13,7 +23,7 @@ import TimerWatch from './TimerWatch.vue';
       <h1 class="title is-size-2 has-text-primary">TimeTasker</h1>
 
      <!-- CRONOMETRO -->
-      <TimerWatch/>
+      <TimerWatch @timerCompleted="stopTask"/>
       <!-- Campo de texto -->
       <div class="field mt-4">
         <div class="control">
@@ -21,14 +31,14 @@ import TimerWatch from './TimerWatch.vue';
             class="input is-medium has-text-centered"
             type="text"
             placeholder="Digite a tarefa"
+            v-model="description"
           />
         </div>
       </div>
 
    
 
-      <!-- Lista de tarefas -->
-      <TaskList/>
+  
     </div>
   </section>
 </div>
